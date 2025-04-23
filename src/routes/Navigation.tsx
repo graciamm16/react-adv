@@ -1,35 +1,53 @@
 import { BrowserRouter, Navigate } from "react-router-dom";
 import { Route, Routes, NavLink } from "react-router-dom";
 import logo from "../logo.svg";
+import {routes} from './routes';
+import { Suspense } from "react";
 
 
 export const Navigation = () => {
   return(
-    <BrowserRouter>
-        <div className="main-layout">
-            <nav>
-                <img src={logo} alt="React Logo" />
-                <ul>
-                    <li>
-                        <NavLink to="/home" className={({isActive}) => isActive ? 'nav-active' : ''}>Home</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/about" className={({isActive}) => isActive ? 'nav-active' : ''}>About</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/users" className={({isActive}) => isActive ? 'nav-active' : ''}>Users</NavLink>
-                    </li>
-                </ul>
-            </nav>
+    /*
+        1. Maneja la carga de componentes de manera asíncrona.
+        2. Mejora la experiencia del usuario al proporcionar una indiciación visual mientras espera la carga de los componentes.
+    */
+    <Suspense fallback={<span>Loadings...</span>}>
+        <BrowserRouter>
+            <div className="main-layout">
+                <nav>
+                    <img src={logo} alt="React Logo" />
+                    <ul>
+                        {/* TODO: crear navlinks dinámicos */}
+                        {
+                            routes.map(({to, name}) => (
+                                <li key={to}>
+                                    <NavLink
+                                        to={to} 
+                                        className={({isActive}) => isActive ? 'nav-active' : ''}
+                                    >
+                                        {name}
+                                    </NavLink>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </nav>
 
-            <Routes>
-                <Route path="home" element={<h1>Home Page</h1>}/>
-                <Route path="about" element={<h1>About Page</h1>}/>
-                <Route path="users" element={<h1>Users Page</h1>}/>
-                
-                <Route path="/*" element={<Navigate to="/home" replace/>}/>
-            </Routes>
-        </div>
-    </BrowserRouter>
+                <Routes>
+                    {
+                        routes.map(({path, Component}) => (
+                            <Route
+                                key={path} 
+                                path={path} 
+                                element={<Component />}
+                            />
+                        ))
+                    }
+
+                    <Route path="/*" element={<Navigate to={routes[0].to} replace/>}/>
+                </Routes>
+            </div>
+        </BrowserRouter>
+    </Suspense>
   );
 }
