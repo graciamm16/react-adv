@@ -1,35 +1,39 @@
-import { BrowserRouter, Navigate } from "react-router-dom";
-import { Route, Routes, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-dom';
 import logo from "../logo.svg";
+import { LazyPage1, LazyPage2, LazyPage3 } from '../1-lazyload/pages';
 
 
 export const Navigation = () => {
   return(
-    <BrowserRouter>
+    <Router>
         <div className="main-layout">
             <nav>
                 <img src={logo} alt="React Logo" />
                 <ul>
                     <li>
-                        <NavLink to="/home" className={({isActive}) => isActive ? 'nav-active' : ''}>Home</NavLink>
+                        <NavLink to="/lazy1" activeClassName="nav-active" exact>Lazy1</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/about" className={({isActive}) => isActive ? 'nav-active' : ''}>About</NavLink>
+                        <NavLink to="/lazy2" activeClassName="nav-active" exact>Lazy2</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/users" className={({isActive}) => isActive ? 'nav-active' : ''}>Users</NavLink>
+                        <NavLink to="/lazy3" activeClassName="nav-active" exact>Lazy3</NavLink>
                     </li>
                 </ul>
             </nav>
 
-            <Routes>
-                <Route path="home" element={<h1>Home Page</h1>}/>
-                <Route path="about" element={<h1>About Page</h1>}/>
-                <Route path="users" element={<h1>Users Page</h1>}/>
-                
-                <Route path="/*" element={<Navigate to="/home" replace/>}/>
-            </Routes>
+            <Switch>
+                <Route path="/lazy1">
+                    <LazyPage1 />
+                </Route>
+                <Route path="/lazy2">
+                    <LazyPage2 />
+                </Route>
+                <Route path="/lazy3">
+                    <LazyPage3 />
+                </Route>
+            </Switch>
         </div>
-    </BrowserRouter>
+    </Router>
   );
 }
