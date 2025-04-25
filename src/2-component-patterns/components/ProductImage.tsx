@@ -17,6 +17,6 @@ export const ProductImage = ({img = ''}) => {
     }
 
     return(
-        <img className={styles.productImg} src={img ? img : noImage} alt="Coffee Mug"/>
+        <img className={styles.productImg} src={imgToShow ? imgToShow : noImage} alt="Coffee Mug"/>
     )
 }
