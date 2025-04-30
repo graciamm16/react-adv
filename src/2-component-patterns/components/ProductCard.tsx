@@ -1,7 +1,7 @@
 import styles from '../styles/styles.module.css';
 import { useProduct } from '../hooks/useProduct';
 import { createContext } from 'react';
-import { Product, ProductContextProps } from '../interfaces/interfaces';
+import { onChangeArgs, Product, ProductContextProps } from '../interfaces/interfaces';
 
 
 export const ProductContext = createContext({} as ProductContextProps);
@@ -11,12 +11,15 @@ export interface Props{
     children?: React.ReactElement | React.ReactElement[];
     product: Product;
     className?: string;
-    style?: React.CSSProperties
+    style?: React.CSSProperties;
+    onChange?: (args: onChangeArgs) => void;
+    value?: number
 }
 
 // Creamos pequeños componentes, facilitando que un usuario pueda crear su componente 
-export const ProductCard = ({children, product, className, style}: Props) => {
-    const {counter, increaseBy} = useProduct();
+export const ProductCard = ({children, product, className, style, onChange, value}: Props) => {
+    // Función encargada de manejar el estado
+    const {counter, increaseBy} = useProduct({onChange, product, value});
 
     return (
         <Provider value={{
@@ -33,4 +36,3 @@ export const ProductCard = ({children, product, className, style}: Props) => {
         </Provider>
     )
 }
-
