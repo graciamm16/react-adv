@@ -9,7 +9,6 @@ interface Props{
 
 export const MySelect = ({label, ...props}: Props) => {
     const [field] = useField(props);
-    // console.log(field);
 
     return (
         <>
